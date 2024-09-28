@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "StarzPlayEntertainment"
 include(":app")
- 
+include(":library")
