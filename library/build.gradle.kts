@@ -44,13 +44,18 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
+    //Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
     //Retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit2.converter.gson)
     implementation(libs.okhttp)
-    //Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+
+    // OkHttp
+    implementation (libs.okhttp3.okhttp.v4100)
+    implementation (libs.logging.interceptor)
 
 
     testImplementation(libs.junit)
