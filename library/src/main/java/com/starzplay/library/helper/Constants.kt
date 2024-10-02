@@ -1,7 +1,9 @@
 package com.starzplay.library.helper
 
 object Constants {
-
+    const val TIME_OUT = 1500L
     const val BASE_URL = "https://api.themoviedb.org/3/"
-    const val API_KEY = "3d0cda4466f269e793e9283f6ce0b75e"
+    const val MULTI_MOVIE_END_POINT = "search/multi"
+    const val access_token =
+        "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4M2FkZGZjNjQyOTUzOGRlYTgzMjhjZGI0Mzg3NGQ2MiIsIm5iZiI6MTcyNzg3NjE0MS4yMTYzLCJzdWIiOiI2NmUxN2VkNjAwMDAwMDAwMDA0Yzk1ZmUiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.0WlcX2E7-sdTvDqW-Ou91pVr6Hkxk5Iclf8C2srcIho"
 }

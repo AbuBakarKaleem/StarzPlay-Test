@@ -1,10 +1,21 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
 }
+// Load credentials
+fun loadCredentials(): Properties {
+    val credentialFile = rootProject.file("credentials.properties")
+    val credentialProperty = Properties()
+    credentialProperty.load(FileInputStream(credentialFile))
+    return credentialProperty
+}
 
+val credentials = loadCredentials()
 android {
     namespace = "com.starzplay.library"
     compileSdk = 34
@@ -15,6 +26,10 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        // Use the properties loaded above
+        buildConfigField("String", "BASE_URL", credentials["BASE_URL"].toString())
+        buildConfigField("String", "ACCESS_TOKEN", credentials["ACCESS_TOKEN"].toString())
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -54,8 +69,8 @@ dependencies {
     implementation(libs.okhttp)
 
     // OkHttp
-    implementation (libs.okhttp3.okhttp.v4100)
-    implementation (libs.logging.interceptor)
+    implementation(libs.okhttp3.okhttp.v4100)
+    implementation(libs.logging.interceptor)
 
 
     testImplementation(libs.junit)
