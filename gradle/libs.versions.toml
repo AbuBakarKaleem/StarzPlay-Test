@@ -53,4 +53,5 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 safe-args  = {id = "androidx.navigation.safeargs" , version.ref ="safeArg"}
 hilt  = {id = "com.google.dagger.hilt.android" , version.ref ="hiltVersion"}
+android-library = { id = "com.android.library", version.ref = "agp" }
 
