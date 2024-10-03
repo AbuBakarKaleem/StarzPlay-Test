@@ -1,4 +1,4 @@
-package com.starzplay.library.data.remote.ResponseModel
+package com.starzplay.starzlibrary.data.remote.ResponseModel
 
 
 import com.google.gson.annotations.SerializedName
@@ -6,14 +6,14 @@ import com.google.gson.annotations.SerializedName
 data class Movies(
     @SerializedName("page") val page: Int,
 
-    @SerializedName("results") val results: List<Result>,
+    @SerializedName("results") val results: List<MoviesData>,
 
     @SerializedName("total_pages") val totalPages: Int,
 
     @SerializedName("total_results") val totalResults: Int
 )
 
-data class Result(
+data class MoviesData(
     @SerializedName("backdrop_path") val backdropPath: String?,
 
     @SerializedName("id") val id: Int,

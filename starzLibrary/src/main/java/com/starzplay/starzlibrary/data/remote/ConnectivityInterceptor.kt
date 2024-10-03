@@ -1,4 +1,4 @@
-package com.starzplay.library.data.remote
+package com.starzplay.starzlibrary.data.remote
 
 import okhttp3.Interceptor
 import okhttp3.Response

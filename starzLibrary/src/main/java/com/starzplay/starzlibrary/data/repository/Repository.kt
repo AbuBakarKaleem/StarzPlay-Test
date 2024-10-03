@@ -1,7 +1,7 @@
-package com.starzplay.library.data.repository
+package com.starzplay.starzlibrary.data.repository
 
-import com.starzplay.library.data.remote.DataState
-import com.starzplay.library.data.remote.ResponseModel.Movies
+import com.starzplay.starzlibrary.data.remote.DataState
+import com.starzplay.starzlibrary.data.remote.ResponseModel.Movies
 import kotlinx.coroutines.flow.Flow
 
 interface Repository {

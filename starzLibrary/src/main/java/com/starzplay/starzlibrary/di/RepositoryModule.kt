@@ -1,8 +1,8 @@
-package com.starzplay.library.di
+package com.starzplay.starzlibrary.di
 
-import com.starzplay.library.data.remote.ApiService
-import com.starzplay.library.data.repository.Repository
-import com.starzplay.library.data.repository.RepositoryImpl
+import com.starzplay.starzlibrary.data.remote.ApiService
+import com.starzplay.starzlibrary.data.repository.Repository
+import com.starzplay.starzlibrary.data.repository.RepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

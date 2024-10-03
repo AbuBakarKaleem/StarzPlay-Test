@@ -1,4 +1,4 @@
-package com.starzplay.library.helper
+package com.starzplay.starzlibrary.helper
 
 object Constants {
     const val TIME_OUT = 1500L

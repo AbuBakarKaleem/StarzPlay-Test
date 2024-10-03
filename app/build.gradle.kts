@@ -57,6 +57,12 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
+    //Glide
+    implementation (libs.glide)
+
+    //Starz Library
+    implementation(project(":starzLibrary"))
+
     //Unit Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

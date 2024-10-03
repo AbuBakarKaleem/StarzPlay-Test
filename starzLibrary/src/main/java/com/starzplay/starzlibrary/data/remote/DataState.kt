@@ -1,4 +1,4 @@
-package com.starzplay.library.data.remote
+package com.starzplay.starzlibrary.data.remote
 
 /**
  * A generic class that holds a value with its loading status.
@@ -11,7 +11,6 @@ sealed class DataState<T>(
 ) {
     class Success<T>(data: T?) : DataState<T>(data)
     class Error<T>(customMessages: CustomMessages) : DataState<T>(error = customMessages)
-    class Loading<T> : DataState<T>()
     sealed class CustomMessages(open val message: String = "") {
         object Timeout : CustomMessages()
         object EmptyData : CustomMessages()
@@ -19,7 +18,9 @@ sealed class DataState<T>(
         object HttpException : CustomMessages()
         object SocketTimeOutException : CustomMessages()
         object NoInternet : CustomMessages()
-        data class Unauthorized(override var message:String = "Invalid login. Please check your credentials.") : CustomMessages()
+        data class Unauthorized(override var message: String = "Invalid login. Please check your credentials.") :
+            CustomMessages()
+
         object InternalServerError : CustomMessages()
         object BadRequest : CustomMessages()
         object Conflict : CustomMessages()

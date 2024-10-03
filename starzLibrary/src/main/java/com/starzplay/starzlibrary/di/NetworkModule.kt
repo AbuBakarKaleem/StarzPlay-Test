@@ -1,10 +1,11 @@
-package com.starzplay.library.di
+package com.starzplay.starzlibrary.di
 
 
 import com.google.gson.Gson
-import com.starzplay.library.data.remote.ApiService
-import com.starzplay.library.helper.Constants.BASE_URL
-import com.starzplay.library.helper.Constants.TIME_OUT
+import com.starzplay.starzlibrary.data.remote.ApiService
+import com.starzplay.starzlibrary.helper.Constants.BASE_URL
+import com.starzplay.starzlibrary.helper.Constants.TIME_OUT
+import com.starzplay.starzlibrary.helper.Constants.access_token
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,7 +34,7 @@ object NetworkModule {
         val apiInterceptor = Interceptor { chain ->
             chain.proceed(
                 chain.request().newBuilder().addHeader("accept", "application/json")
-                    .addHeader("Authorization", "Bearer $BuildConfig.ACCESS_TOKEN").build()
+                    .addHeader("Authorization", "Bearer $access_token").build()
             )
         }
 
@@ -46,7 +47,7 @@ object NetworkModule {
     @Singleton
     @Provides
     fun providesRetrofit(okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL).client(okHttpClient)
+        return Retrofit.Builder().baseUrl(BASE_URL).client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(Gson())).build()
     }
 

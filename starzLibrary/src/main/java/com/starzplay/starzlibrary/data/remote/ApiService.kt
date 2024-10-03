@@ -1,8 +1,8 @@
-package com.starzplay.library.data.remote
+package com.starzplay.starzlibrary.data.remote
 
-import com.starzplay.library.data.remote.ResponseModel.Movies
-import com.starzplay.library.helper.Constants.MULTI_MOVIE_END_POINT
-import com.starzplay.library.helper.Constants.access_token
+import com.starzplay.starzlibrary.data.remote.ResponseModel.Movies
+import com.starzplay.starzlibrary.helper.Constants.MULTI_MOVIE_END_POINT
+import com.starzplay.starzlibrary.helper.Constants.access_token
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers

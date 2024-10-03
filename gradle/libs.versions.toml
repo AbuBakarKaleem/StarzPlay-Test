@@ -1,6 +1,7 @@
 [versions]
 agp = "8.6.0"
 converterGson = "2.9.0"
+glide = "4.16.0"
 hiltAndroid = "2.51.1"
 hiltCompiler = "2.48"
 kotlin = "1.9.0"
@@ -26,6 +27,7 @@ squareupOkhttpVersion = "4.10.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltCompiler" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

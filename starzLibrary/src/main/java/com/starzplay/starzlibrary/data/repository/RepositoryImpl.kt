@@ -1,8 +1,8 @@
-package com.starzplay.library.data.repository
+package com.starzplay.starzlibrary.data.repository
 
-import com.starzplay.library.data.remote.ApiService
-import com.starzplay.library.data.remote.DataState
-import com.starzplay.library.data.remote.ResponseModel.Movies
+import com.starzplay.starzlibrary.data.remote.ApiService
+import com.starzplay.starzlibrary.data.remote.DataState
+import com.starzplay.starzlibrary.data.remote.ResponseModel.Movies
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -11,7 +11,6 @@ class RepositoryImpl @Inject constructor(
     private val apiService: ApiService,
 ) : Repository {
     override suspend fun getMovies(searchQuery: String, page: Int) = flow {
-        emit(DataState.Loading())
         val response = apiService.getMovies(query = searchQuery, page = page)
         emit(
             if (response.isSuccessful) {
