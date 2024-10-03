@@ -6,11 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.starzplay.entertainment.databinding.ItemCarouselBinding
+import com.starzplay.entertainment.interfaces.OnMediaClickListener
 import com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData
 import java.util.Locale
 import javax.inject.Inject
 
-class MoviesAdapter @Inject constructor() : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
+class MoviesAdapter @Inject constructor(
+    private val listener: OnMediaClickListener
+) : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
 
     private val moviesGroups = mutableListOf<Pair<String, List<MoviesData>>>()
 
@@ -30,7 +33,7 @@ class MoviesAdapter @Inject constructor() : RecyclerView.Adapter<MoviesAdapter.M
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
         val (mediaType, items) = moviesGroups[position]
-        holder.bind(mediaType, items)
+        holder.bind(mediaType, items, listener)
     }
 
     override fun getItemCount(): Int = moviesGroups.size
@@ -38,14 +41,14 @@ class MoviesAdapter @Inject constructor() : RecyclerView.Adapter<MoviesAdapter.M
     class MoviesViewHolder(private val binding: ItemCarouselBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(mediaType: String, items: List<MoviesData>) {
+        fun bind(mediaType: String, items: List<MoviesData>, listener: OnMediaClickListener) {
             binding.titleView.text = mediaType.replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(
                     Locale.getDefault()
                 ) else it.toString()
             }
 
-            val carouselAdapter = MediaAdapter()
+            val carouselAdapter = MediaAdapter(listener)
             binding.apply {
                 mediaView.adapter = carouselAdapter
                 mediaView.layoutManager =

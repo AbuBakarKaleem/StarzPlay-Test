@@ -9,6 +9,8 @@ import androidx.navigation.fragment.findNavController
 import com.starzplay.entertainment.databinding.FragmentMoviesBinding
 import com.starzplay.entertainment.models.UIState
 import com.starzplay.entertainment.ui.base.BaseFragment
+import com.starzplay.entertainment.interfaces.OnMediaClickListener
+import com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData
 import com.starzplay.starzlibrary.helper.gone
 import com.starzplay.starzlibrary.helper.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,10 +19,11 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding::inflate) {
+class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding::inflate),
+    OnMediaClickListener {
 
     private val viewModel: MoviesViewModel by viewModels()
-    private val moviesAdapter = MoviesAdapter()
+    private lateinit var moviesAdapter: MoviesAdapter
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,6 +34,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
     }
 
     private fun setupViews() = with(binding) {
+        moviesAdapter = MoviesAdapter(this@MoviesFragment)
         searchView.apply {
             isIconified = false
             clearFocus()
@@ -43,7 +47,6 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    // Handle real-time text changes if needed
                     return false
                 }
             })
@@ -64,15 +67,15 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
             uiState.collectLatest { uiState ->
                 when (uiState) {
                     is UIState.LoadingState -> {
-                        binding.progressBar.show()
+                        showLoading()
                     }
 
                     is UIState.ContentState, UIState.InitialState -> {
-                        binding.progressBar.gone()
+                        hideLoading()
                     }
 
                     is UIState.ErrorState -> {
-                        binding.progressBar.gone()
+                        hideLoading()
                         showAlertDialog(messages = uiState.message,
                             onPosClick = { _, _ -> },
                             onNegClick = { _, _ -> })
@@ -83,13 +86,27 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
 
     }
 
-    private fun navigateToDetail() {
-        findNavController().navigate(MoviesFragmentDirections.toDetailFragment())
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.movies.removeObservers(this)
+    }
+
+    private fun showLoading() {
+        binding.apply {
+            carouselRecyclerView.gone()
+            progressBar.show()
+        }
+    }
+
+    private fun hideLoading() {
+        binding.apply {
+            progressBar.gone()
+            carouselRecyclerView.show()
+        }
+    }
+
+    override fun onMediaClick(movie: MoviesData) {
+        findNavController().navigate(MoviesFragmentDirections.toDetailFragment())
     }
 
 }

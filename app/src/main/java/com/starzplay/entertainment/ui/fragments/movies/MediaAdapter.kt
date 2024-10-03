@@ -6,10 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.starzplay.entertainment.databinding.ItemMediaBinding
+import com.starzplay.entertainment.interfaces.OnMediaClickListener
 import com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData
 import javax.inject.Inject
 
-class MediaAdapter @Inject constructor() : RecyclerView.Adapter<MediaAdapter.CarouselViewHolder>() {
+class MediaAdapter @Inject constructor(
+    private val listener: OnMediaClickListener
+) : RecyclerView.Adapter<MediaAdapter.CarouselViewHolder>() {
 
     private var moviesData = listOf<MoviesData>()
 
@@ -26,7 +29,12 @@ class MediaAdapter @Inject constructor() : RecyclerView.Adapter<MediaAdapter.Car
     }
 
     override fun onBindViewHolder(holder: CarouselViewHolder, position: Int) {
-        holder.bind(moviesData[position])
+        val movie = moviesData[position]
+        holder.bind(movie)
+
+        holder.itemView.setOnClickListener {
+            listener.onMediaClick(movie)
+        }
     }
 
     override fun getItemCount(): Int = moviesData.size

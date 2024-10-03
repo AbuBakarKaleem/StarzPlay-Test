@@ -17,6 +17,6 @@ interface ApiService {
         @Query("query", encoded = true) query: String,
         @Query("include_adult") adult: Boolean = false,
         @Query("language") language: String = "en-US",
-        @Query("page") page: Int = 1,
+        @Query("page") pageNo: Int = 1,
     ): Response<Movies>
 }

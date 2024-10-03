@@ -59,6 +59,12 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
+    implementation (libs.androidx.recyclerview)
+
+    // Kotlin Coroutines
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
+
     //Hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

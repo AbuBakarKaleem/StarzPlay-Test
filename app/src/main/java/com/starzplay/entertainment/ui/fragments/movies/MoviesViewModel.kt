@@ -9,10 +9,12 @@ import com.starzplay.starzlibrary.data.remote.DataState
 import com.starzplay.starzlibrary.data.remote.ResponseModel.Movies
 import com.starzplay.starzlibrary.data.usecases.FetchMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,18 +30,20 @@ class MoviesViewModel @Inject constructor(
 
     fun getMovies(query: String = "All") {
         _uiState.value = UIState.LoadingState
-        viewModelScope.launch {
-            moviesUseCase.invoke(searchQuery = query).collect { dataState ->
-                when (dataState) {
-                    is DataState.Success -> {
-                        _uiState.value = UIState.ContentState
-                        dataState.data?.let {
-                            _movies.value = it
+        viewModelScope.launch(Dispatchers.IO) {
+            moviesUseCase.invoke(searchQuery = query, pageNo = 1).collect { dataState ->
+                withContext(Dispatchers.Main) {
+                    when (dataState) {
+                        is DataState.Success -> {
+                            _uiState.value = UIState.ContentState
+                            dataState.data?.let {
+                                _movies.value = it
+                            }
                         }
-                    }
 
-                    is DataState.Error -> {
-                        _uiState.value = UIState.ErrorState(dataState.error.message)
+                        is DataState.Error -> {
+                            _uiState.value = UIState.ErrorState(dataState.error.message)
+                        }
                     }
                 }
             }
