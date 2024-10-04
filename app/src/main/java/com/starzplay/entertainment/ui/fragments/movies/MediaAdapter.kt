@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.starzplay.entertainment.databinding.ItemMediaBinding
+import com.starzplay.entertainment.extension.loadImage
 import com.starzplay.entertainment.interfaces.OnMediaClickListener
 import com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData
-import javax.inject.Inject
+import com.starzplay.starzlibrary.helper.gone
 
-class MediaAdapter @Inject constructor(
+class MediaAdapter(
     private val listener: OnMediaClickListener
 ) : RecyclerView.Adapter<MediaAdapter.CarouselViewHolder>() {
 
@@ -43,7 +43,14 @@ class MediaAdapter @Inject constructor(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movie: MoviesData) {
-            Glide.with(binding.root.context).load(movie.posterPath).into(binding.mediaImage)
+            val imageUrl = when (movie.mediaType) {
+                "person" -> movie.profilePath
+                "tv", "movie" -> movie.posterPath
+                else -> movie.posterPath
+            }
+            imageUrl?.let {
+                binding.root.context.loadImage(it, binding.mediaImage, binding.imageProgressView)
+            } ?: binding.imageProgressView.gone()
         }
     }
 }

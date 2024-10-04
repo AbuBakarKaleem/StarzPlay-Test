@@ -10,7 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_launcher_background" />
+        android:src="@drawable/ic_media_placeholder" />
+
+    <ProgressBar
+        android:id="@+id/imageProgressView"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/black" />
 
 </androidx.cardview.widget.CardView>

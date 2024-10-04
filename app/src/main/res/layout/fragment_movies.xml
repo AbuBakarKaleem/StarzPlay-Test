@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/screen_background"
-    android:fitsSystemWindows="true"
     tools:context=".ui.fragments.movies.MoviesFragment">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="12dp"
         android:background="?attr/selectableItemBackground"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,6 +25,8 @@
         android:id="@+id/carouselRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

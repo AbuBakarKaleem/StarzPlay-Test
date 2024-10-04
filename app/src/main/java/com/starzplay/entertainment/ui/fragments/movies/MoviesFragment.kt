@@ -8,17 +8,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.starzplay.entertainment.databinding.FragmentMoviesBinding
 import com.starzplay.entertainment.interfaces.OnMediaClickListener
+import com.starzplay.entertainment.models.DetailInfo
 import com.starzplay.entertainment.models.UIState
 import com.starzplay.entertainment.ui.base.BaseFragment
 import com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData
 import com.starzplay.starzlibrary.helper.gone
 import com.starzplay.starzlibrary.helper.show
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-@AndroidEntryPoint
 class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding::inflate),
     OnMediaClickListener {
 
@@ -28,7 +27,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getMovies("")
+        viewModel.getMovies()
         setupViews()
         setupObserverListener()
     }
@@ -40,9 +39,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
             clearFocus()
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    query?.let {
-                        viewModel.getMovies(query = query)
-                    }
+                    if (!query.isNullOrEmpty()) viewModel.getMovies(query = query)
                     return true
                 }
 
@@ -106,7 +103,28 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
     }
 
     override fun onMediaClick(movie: MoviesData) {
-        findNavController().navigate(MoviesFragmentDirections.toDetailFragment(movie))
+        val detailInfo = DetailInfo().apply {
+            mediaType = movie.mediaType
+            title = movie.mediaType
+            when (movie.mediaType) {
+                "person" -> {
+                    description = movie.name
+                    imageUrl = movie.profilePath ?: ""
+                }
+
+                "tv", "movie" -> {
+                    description = movie.overview ?: ""
+                    imageUrl = movie.profilePath ?: ""
+                }
+
+                else -> {
+                    //do nothing
+                }
+            }
+        }
+        findNavController().navigate(
+            MoviesFragmentDirections.toDetailFragment(detailInfo)
+        )
     }
 
 }

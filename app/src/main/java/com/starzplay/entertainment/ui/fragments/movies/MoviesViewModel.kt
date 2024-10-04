@@ -8,20 +8,15 @@ import com.starzplay.entertainment.models.UIState
 import com.starzplay.starzlibrary.data.remote.DataState
 import com.starzplay.starzlibrary.data.remote.ResponseModel.Movies
 import com.starzplay.starzlibrary.data.usecases.FetchMoviesUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-@HiltViewModel
-class MoviesViewModel @Inject constructor(
-    private val moviesUseCase: FetchMoviesUseCase,
-) : ViewModel() {
-
+class MoviesViewModel : ViewModel() {
+    private val moviesUseCase = FetchMoviesUseCase()
     private val _movies = MutableLiveData<Movies>()
     val movies: LiveData<Movies> = _movies
 

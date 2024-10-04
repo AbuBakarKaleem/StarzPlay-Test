@@ -6,17 +6,23 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/screen_background"
-    android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".ui.fragments.detail.DetailFragment">
+
+    <ImageView
+        android:id="@+id/backView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:src="@drawable/ic_arrow_back" />
 
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginVertical="16dp"
         android:ellipsize="end"
         android:maxLines="3"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
@@ -35,7 +41,15 @@
             android:id="@+id/detailImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop" />
+
+            android:src="@drawable/ic_media_placeholder" />
+
+        <ProgressBar
+            android:id="@+id/imageProgressView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/black" />
     </androidx.cardview.widget.CardView>
 
 
@@ -47,5 +61,12 @@
         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
         android:textSize="16sp"
         tools:text="description" />
+
+    <Button
+        android:id="@+id/playButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:text="@string/play" />
 
 </LinearLayout>

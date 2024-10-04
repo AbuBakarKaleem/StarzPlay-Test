@@ -6,12 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.starzplay.entertainment.databinding.ItemCarouselBinding
+import com.starzplay.entertainment.extension.toSentenceCase
 import com.starzplay.entertainment.interfaces.OnMediaClickListener
 import com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData
-import java.util.Locale
-import javax.inject.Inject
 
-class MoviesAdapter @Inject constructor(
+class MoviesAdapter(
     private val listener: OnMediaClickListener
 ) : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
 
@@ -42,20 +41,15 @@ class MoviesAdapter @Inject constructor(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(mediaType: String, items: List<MoviesData>, listener: OnMediaClickListener) {
-            binding.titleView.text = mediaType.replaceFirstChar {
-                if (it.isLowerCase()) it.titlecase(
-                    Locale.getDefault()
-                ) else it.toString()
-            }
-
-            val carouselAdapter = MediaAdapter(listener)
+            binding.titleView.text = mediaType.toSentenceCase()
+            val mediaAdapter = MediaAdapter(listener)
             binding.apply {
-                mediaView.adapter = carouselAdapter
+                mediaView.adapter = mediaAdapter
                 mediaView.layoutManager =
                     LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
 
             }
-            carouselAdapter.submitList(items) // Ensure your CarouselAdapter has a submitList method
+            mediaAdapter.submitList(items)
         }
     }
 }

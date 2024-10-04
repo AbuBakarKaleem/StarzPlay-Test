@@ -9,9 +9,7 @@ import com.starzplay.entertainment.R
 import com.starzplay.entertainment.databinding.ActivityMainBinding
 import com.starzplay.entertainment.extension.getColorResource
 import com.starzplay.entertainment.ui.base.BaseActivity
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding

@@ -4,8 +4,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
 }
 
 // Load credentials
@@ -59,20 +58,15 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
-    implementation (libs.androidx.recyclerview)
+    implementation(libs.androidx.recyclerview)
 
     // Kotlin Coroutines
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.jetbrains.kotlinx.coroutines.android)
 
-    //Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-
     //Retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit2.converter.gson)
-    implementation(libs.okhttp)
 
     // OkHttp
     implementation(libs.okhttp3.okhttp.v4100)

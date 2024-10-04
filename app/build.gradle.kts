@@ -2,8 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.safe.args)
-    id("kotlin-kapt")
-    id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
 }
 android {
     namespace = "com.starzplay.entertainment"
@@ -46,7 +45,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation (libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
@@ -58,15 +57,11 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.jetbrains.kotlinx.coroutines.android)
 
-    //Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-
     //Glide
-    implementation ("com.github.bumptech.glide:glide:4.12.0")
-    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation ("com.github.bumptech.glide:okhttp3-integration:4.12.0")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.github.bumptech.glide:okhttp3-integration:4.12.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
 
     //Starz Library
     implementation(project(":starzLibrary"))

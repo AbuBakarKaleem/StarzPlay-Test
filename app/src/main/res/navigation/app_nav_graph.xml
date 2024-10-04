@@ -20,7 +20,8 @@
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail">
         <argument
-            android:name="selectedMovie"
-            app:argType="com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData" />
+            android:name="selectedMovieInfo"
+            app:argType="com.starzplay.entertainment.models.DetailInfo"
+            app:nullable="false" />
     </fragment>
 </navigation>

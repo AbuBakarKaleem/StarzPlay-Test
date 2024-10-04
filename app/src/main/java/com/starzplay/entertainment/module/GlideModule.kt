@@ -17,8 +17,7 @@ class CustomGlideModule : AppGlideModule() {
 
         // Use OkHttpClient with Glide
         registry.replace(
-            GlideUrl::class.java, InputStream::class.java,
-            OkHttpUrlLoader.Factory(okHttpClient)
+            GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory(okHttpClient)
         )
     }
 }
