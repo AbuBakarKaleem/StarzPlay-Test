@@ -7,9 +7,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.starzplay.entertainment.databinding.FragmentMoviesBinding
+import com.starzplay.entertainment.interfaces.OnMediaClickListener
 import com.starzplay.entertainment.models.UIState
 import com.starzplay.entertainment.ui.base.BaseFragment
-import com.starzplay.entertainment.interfaces.OnMediaClickListener
 import com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData
 import com.starzplay.starzlibrary.helper.gone
 import com.starzplay.starzlibrary.helper.show
@@ -106,7 +106,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
     }
 
     override fun onMediaClick(movie: MoviesData) {
-        findNavController().navigate(MoviesFragmentDirections.toDetailFragment())
+        findNavController().navigate(MoviesFragmentDirections.toDetailFragment(movie))
     }
 
 }

@@ -19,7 +19,7 @@ class MediaAdapter @Inject constructor(
     @SuppressLint("NotifyDataSetChanged")
     fun submitList(newList: List<MoviesData>) {
         moviesData = newList
-        notifyDataSetChanged() // Notify the adapter that the data set has changed
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselViewHolder {

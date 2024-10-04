@@ -1,7 +1,6 @@
 package com.starzplay.starzlibrary.data.remote.ResponseModel
-
-
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Movies(
     @SerializedName("page") val page: Int,
@@ -11,7 +10,7 @@ data class Movies(
     @SerializedName("total_pages") val totalPages: Int,
 
     @SerializedName("total_results") val totalResults: Int
-)
+) : Serializable
 
 data class MoviesData(
     @SerializedName("backdrop_path") val backdropPath: String?,
@@ -54,7 +53,7 @@ data class MoviesData(
     @SerializedName("release_date") val releaseDate: String? = null,
 
     @SerializedName("video") val video: Boolean? = null
-)
+) : Serializable
 
 data class KnownFor(
     @SerializedName("backdrop_path") val backdropPath: String?,
@@ -92,5 +91,5 @@ data class KnownFor(
     @SerializedName("release_date") val releaseDate: String? = null,
 
     @SerializedName("video") val video: Boolean? = null
-)
+) : Serializable
 
