@@ -1,4 +1,4 @@
-package com.starzplay.entertainment.ui.fragments.movies
+package com.starzplay.entertainment.ui.fragments.search
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

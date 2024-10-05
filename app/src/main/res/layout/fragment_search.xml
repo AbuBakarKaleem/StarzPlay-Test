@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/screen_background"
-    tools:context=".ui.fragments.movies.MoviesFragment">
+    tools:context=".ui.fragments.search.SearchFragment">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_view"

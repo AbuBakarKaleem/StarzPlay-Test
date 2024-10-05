@@ -1,4 +1,4 @@
-package com.starzplay.entertainment.ui.fragments.movies
+package com.starzplay.entertainment.ui.fragments.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MoviesViewModel : ViewModel() {
+class SearchViewModel : ViewModel() {
     private val moviesUseCase = FetchMoviesUseCase()
 
     private val _movies = MutableLiveData<Movies>()

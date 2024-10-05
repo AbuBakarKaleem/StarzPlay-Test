@@ -1,4 +1,4 @@
-package com.starzplay.entertainment.ui.fragments.movies
+package com.starzplay.entertainment.ui.fragments.search
 
 import android.os.Bundle
 import android.view.View
@@ -6,7 +6,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.starzplay.entertainment.databinding.FragmentMoviesBinding
+import com.starzplay.entertainment.databinding.FragmentSearchBinding
 import com.starzplay.entertainment.models.DetailInfo
 import com.starzplay.entertainment.models.UIState
 import com.starzplay.entertainment.ui.base.BaseFragment
@@ -18,9 +18,9 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding::inflate) {
+class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
 
-    private val viewModel: MoviesViewModel by viewModels()
+    private val viewModel: SearchViewModel by viewModels()
     private lateinit var mediaAdapter: MediaAdapter
 
 
@@ -133,7 +133,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
             }
         }
         findNavController().navigate(
-            MoviesFragmentDirections.toDetailFragment(detailInfo)
+            SearchFragmentDirections.toDetailFragment(detailInfo)
         )
     }
 
