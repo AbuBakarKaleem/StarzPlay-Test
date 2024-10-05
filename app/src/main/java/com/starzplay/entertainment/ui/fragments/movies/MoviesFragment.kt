@@ -7,7 +7,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.starzplay.entertainment.databinding.FragmentMoviesBinding
-import com.starzplay.entertainment.interfaces.OnMediaClickListener
 import com.starzplay.entertainment.models.DetailInfo
 import com.starzplay.entertainment.models.UIState
 import com.starzplay.entertainment.ui.base.BaseFragment
@@ -18,8 +17,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding::inflate),
-    OnMediaClickListener {
+class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding::inflate) {
 
     private val viewModel: MoviesViewModel by viewModels()
     private lateinit var moviesAdapter: MoviesAdapter
@@ -27,13 +25,12 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getMovies()
         setupViews()
         setupObserverListener()
     }
 
     private fun setupViews() = with(binding) {
-        moviesAdapter = MoviesAdapter(this@MoviesFragment)
+        moviesAdapter = MoviesAdapter { movieData -> navigateToDetail(movieData) }
         searchView.apply {
             isIconified = false
             clearFocus()
@@ -102,7 +99,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
         }
     }
 
-    override fun onMediaClick(movie: MoviesData) {
+    private fun navigateToDetail(movie: MoviesData) {
         val detailInfo = DetailInfo().apply {
             mediaType = movie.mediaType
             title = movie.mediaType

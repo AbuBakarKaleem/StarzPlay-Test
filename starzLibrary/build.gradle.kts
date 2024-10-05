@@ -1,5 +1,3 @@
-import java.io.FileInputStream
-import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.library)
@@ -7,26 +5,13 @@ plugins {
     id("kotlin-parcelize")
 }
 
-// Load credentials
-fun loadCredentials(): Properties {
-    val credentialFile = rootProject.file("credentials.properties")
-    val credentialProperty = Properties()
-    credentialProperty.load(FileInputStream(credentialFile))
-    return credentialProperty
-}
 
-val credentials = loadCredentials()
 android {
     namespace = "com.starzplay.starzlibrary"
     compileSdk = 34
 
     defaultConfig {
         minSdk = 24
-
-        // Use the properties loaded above
-        buildConfigField("String", "BASE_URL", credentials["BASE_URL"].toString())
-        buildConfigField("String", "ACCESS_TOKEN", credentials["ACCESS_TOKEN"].toString())
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }

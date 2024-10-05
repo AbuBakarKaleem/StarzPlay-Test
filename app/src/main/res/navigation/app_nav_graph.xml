@@ -23,5 +23,15 @@
             android:name="selectedMovieInfo"
             app:argType="com.starzplay.entertainment.models.DetailInfo"
             app:nullable="false" />
+
+        <action
+            android:id="@+id/toPlayerFragment"
+            app:destination="@id/playerFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.starzplay.entertainment.ui.fragments.player.PlayerFragment"
+        android:label="fragment_player"
+        tools:layout="@layout/fragment_player"/>
 </navigation>

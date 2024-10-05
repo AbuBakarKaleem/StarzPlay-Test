@@ -7,7 +7,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.starzplay.entertainment.databinding.FragmentDetailBinding
 import com.starzplay.entertainment.extension.loadImage
-import com.starzplay.entertainment.extension.longToast
 import com.starzplay.entertainment.extension.toSentenceCase
 import com.starzplay.entertainment.models.DetailInfo
 import com.starzplay.entertainment.ui.base.BaseFragment
@@ -31,7 +30,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
 
     private fun setupListeners() = with(binding) {
         playButton.setOnClickListener {
-            longToast("Play video")
+            findNavController().navigate(DetailFragmentDirections.toPlayerFragment())
         }
         backView.setOnClickListener { findNavController().navigateUp() }
     }
@@ -42,7 +41,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         playButton.isVisible = selectedMovie.mediaType != "person"
 
         selectedMovie.imageUrl.takeIf { it.isNotEmpty() }?.let {
-            requireContext().loadImage(it, detailImage, imageProgressView)
+            requireContext().loadImage(it, detailImage)
+            binding.imageProgressView.gone()
         } ?: imageProgressView.gone()
     }
 }

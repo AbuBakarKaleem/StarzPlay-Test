@@ -7,11 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.starzplay.entertainment.databinding.ItemCarouselBinding
 import com.starzplay.entertainment.extension.toSentenceCase
-import com.starzplay.entertainment.interfaces.OnMediaClickListener
 import com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData
 
 class MoviesAdapter(
-    private val listener: OnMediaClickListener
+    private val listener: (MoviesData) -> Unit
 ) : RecyclerView.Adapter<MoviesAdapter.MoviesViewHolder>() {
 
     private val moviesGroups = mutableListOf<Pair<String, List<MoviesData>>>()
@@ -40,7 +39,7 @@ class MoviesAdapter(
     class MoviesViewHolder(private val binding: ItemCarouselBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(mediaType: String, items: List<MoviesData>, listener: OnMediaClickListener) {
+        fun bind(mediaType: String, items: List<MoviesData>, listener: (MoviesData) -> Unit) {
             binding.titleView.text = mediaType.toSentenceCase()
             val mediaAdapter = MediaAdapter(listener)
             binding.apply {

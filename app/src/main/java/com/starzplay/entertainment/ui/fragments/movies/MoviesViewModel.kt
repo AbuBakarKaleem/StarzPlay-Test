@@ -23,6 +23,10 @@ class MoviesViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<UIState>(UIState.InitialState)
     val uiState: StateFlow<UIState> = _uiState.asStateFlow()
 
+    init {
+        getMovies()
+    }
+
     fun getMovies(query: String = "All") {
         _uiState.value = UIState.LoadingState
         viewModelScope.launch(Dispatchers.IO) {

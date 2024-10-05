@@ -6,12 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.starzplay.entertainment.databinding.ItemMediaBinding
 import com.starzplay.entertainment.extension.loadImage
-import com.starzplay.entertainment.interfaces.OnMediaClickListener
 import com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData
 import com.starzplay.starzlibrary.helper.gone
 
 class MediaAdapter(
-    private val listener: OnMediaClickListener
+    private val listener: (MoviesData) -> Unit
 ) : RecyclerView.Adapter<MediaAdapter.CarouselViewHolder>() {
 
     private var moviesData = listOf<MoviesData>()
@@ -33,7 +32,7 @@ class MediaAdapter(
         holder.bind(movie)
 
         holder.itemView.setOnClickListener {
-            listener.onMediaClick(movie)
+            listener.invoke(movie)
         }
     }
 
@@ -49,7 +48,8 @@ class MediaAdapter(
                 else -> movie.posterPath
             }
             imageUrl?.let {
-                binding.root.context.loadImage(it, binding.mediaImage, binding.imageProgressView)
+                binding.root.context.loadImage(it, binding.mediaImage)
+                binding.imageProgressView.gone()
             } ?: binding.imageProgressView.gone()
         }
     }

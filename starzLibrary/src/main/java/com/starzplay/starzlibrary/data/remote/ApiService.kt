@@ -15,7 +15,7 @@ interface ApiService {
     @GET(MULTI_MOVIE_END_POINT)
     suspend fun getMovies(
         @Query("query", encoded = true) query: String,
-        @Query("include_adult") adult: Boolean = false,
+        @Query("include_adult") adult: Boolean = true,
         @Query("language") language: String = "en-US",
         @Query("page") pageNo: Int = 1,
     ): Response<Movies>
