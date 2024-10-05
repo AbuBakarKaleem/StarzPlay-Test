@@ -111,7 +111,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
 
                 "tv", "movie" -> {
                     description = movie.overview ?: ""
-                    imageUrl = movie.profilePath ?: ""
+                    imageUrl = movie.posterPath ?: ""
                 }
 
                 else -> {
