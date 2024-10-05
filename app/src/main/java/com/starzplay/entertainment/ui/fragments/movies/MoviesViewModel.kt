@@ -17,6 +17,7 @@ import kotlinx.coroutines.withContext
 
 class MoviesViewModel : ViewModel() {
     private val moviesUseCase = FetchMoviesUseCase()
+
     private val _movies = MutableLiveData<Movies>()
     val movies: LiveData<Movies> = _movies
 
@@ -27,10 +28,10 @@ class MoviesViewModel : ViewModel() {
         getMovies()
     }
 
-    fun getMovies(query: String = "All") {
+    fun getMovies(query: String = "All", page: Int = 1) {
         _uiState.value = UIState.LoadingState
         viewModelScope.launch(Dispatchers.IO) {
-            moviesUseCase.invoke(searchQuery = query, pageNo = 1).collect { dataState ->
+            moviesUseCase.invoke(searchQuery = query, pageNo = page).collect { dataState ->
                 withContext(Dispatchers.Main) {
                     when (dataState) {
                         is DataState.Success -> {

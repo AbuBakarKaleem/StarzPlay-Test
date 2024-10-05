@@ -13,6 +13,7 @@ import com.starzplay.entertainment.ui.base.BaseFragment
 import com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData
 import com.starzplay.starzlibrary.helper.gone
 import com.starzplay.starzlibrary.helper.show
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding::inflate) {
 
     private val viewModel: MoviesViewModel by viewModels()
-    private lateinit var moviesAdapter: MoviesAdapter
+    private lateinit var mediaAdapter: MediaAdapter
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,7 +31,13 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
     }
 
     private fun setupViews() = with(binding) {
-        moviesAdapter = MoviesAdapter { movieData -> navigateToDetail(movieData) }
+        mediaAdapter =
+            MediaAdapter(listener = { movieData -> navigateToDetail(movieData) }, loadMore = {
+                val query = searchView.query?.takeIf { it.isNotEmpty() } ?: "All"
+                val currentPage = viewModel.movies.value?.page ?: 1
+
+                viewModel.getMovies(query = query.toString(), page = currentPage.plus(1))
+            })
         searchView.apply {
             isIconified = false
             clearFocus()
@@ -47,14 +54,20 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
 
         }
         carouselRecyclerView.apply {
-            adapter = moviesAdapter
+            adapter = mediaAdapter
         }
     }
 
     private fun setupObserverListener() = with(viewModel) {
 
         movies.observe(viewLifecycleOwner) { respons ->
-            moviesAdapter.submitList(respons.results.groupBy { it.mediaType }.toSortedMap())
+            if (mediaAdapter.itemCount == 0) mediaAdapter.submitList(respons.results.groupBy { it.mediaType }
+                .toSortedMap()) else {
+                lifecycleScope.launch {
+                    delay(100)
+                    mediaAdapter.submitList(respons.results.groupBy { it.mediaType })
+                }
+            }
         }
 
         lifecycleScope.launch {
@@ -87,7 +100,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
 
     private fun showLoading() {
         binding.apply {
-            carouselRecyclerView.gone()
+            //carouselRecyclerView.gone()
             progressBar.show()
         }
     }
@@ -95,7 +108,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>(FragmentMoviesBinding
     private fun hideLoading() {
         binding.apply {
             progressBar.gone()
-            carouselRecyclerView.show()
+            //carouselRecyclerView.show()
         }
     }
 
