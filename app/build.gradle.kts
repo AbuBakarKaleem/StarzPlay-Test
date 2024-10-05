@@ -1,9 +1,11 @@
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.safe.args)
     id("kotlin-parcelize")
 }
+
 android {
     namespace = "com.starzplay.entertainment"
     compileSdk = 34
@@ -60,8 +62,9 @@ dependencies {
     //Glide
     implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
-    implementation("com.github.bumptech.glide:okhttp3-integration:4.12.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
+    //Exo Player
+    implementation ("com.google.android.exoplayer:exoplayer:2.18.5")
 
     //Starz Library
     implementation(project(":starzLibrary"))
