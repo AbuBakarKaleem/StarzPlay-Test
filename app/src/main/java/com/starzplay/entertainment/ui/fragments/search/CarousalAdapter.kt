@@ -57,7 +57,7 @@ class CarousalAdapter(
     }
 
     fun updateMedia(newMovies: List<MediaData>) {
-        val diffCallback = MediaDiffCallback(mediaData, newMovies)
+        val diffCallback = CarosalDiffCallback(mediaData, newMovies)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
         mediaData = newMovies
@@ -65,7 +65,7 @@ class CarousalAdapter(
     }
 }
 
-class MediaDiffCallback(
+class CarosalDiffCallback(
     private val oldList: List<MediaData>, private val newList: List<MediaData>
 ) : DiffUtil.Callback() {
 

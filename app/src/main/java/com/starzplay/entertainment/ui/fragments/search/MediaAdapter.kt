@@ -39,8 +39,9 @@ class MediaAdapter(
     override fun getItemCount(): Int = mediaGroups.size
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateCarousalItemList(updateOnPosition: Int, newList: List<MediaData>) {
-        val oldCount = mediaGroups[updateOnPosition].second.size
+    fun updateCarousalItemList(
+        updateOnPosition: Int, newList: List<MediaData>
+    ) {
         mediaGroups[updateOnPosition].second.addAll(newList)
         notifyItemChanged(updateOnPosition)
     }
@@ -57,15 +58,12 @@ class MediaAdapter(
             listener: (MediaData) -> Unit
         ) {
             val carousalAdapter = CarousalAdapter(listener)
-            val lastVisibleItemPosition: Int
             binding.apply {
                 titleView.text = mediaType.toSentenceCase()
                 carousalView.apply {
                     adapter = carousalAdapter
                     layoutManager =
                         LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
-                    lastVisibleItemPosition =
-                        (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
 
                     addOnScrollListener(object : RecyclerView.OnScrollListener() {
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -80,12 +78,8 @@ class MediaAdapter(
                         }
                     })
                 }
-
+                carousalAdapter.updateMedia(items)
             }
-            carousalAdapter.updateMedia(items)
-            (binding.carousalView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
-                lastVisibleItemPosition, 0
-            )
         }
     }
 

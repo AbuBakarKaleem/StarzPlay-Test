@@ -6,17 +6,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.starzplay.entertainment.R
 import com.starzplay.entertainment.databinding.FragmentSearchBinding
 import com.starzplay.entertainment.models.DetailInfo
 import com.starzplay.entertainment.models.UIState
 import com.starzplay.entertainment.ui.base.BaseFragment
 import com.starzplay.starzlibrary.data.remote.ResponseModel.MediaData
 import com.starzplay.starzlibrary.helper.gone
-import com.starzplay.starzlibrary.helper.hide
 import com.starzplay.starzlibrary.helper.show
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -63,14 +59,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             mediaAdapter.submitList(response)
         }
         mediaTypeData.observe(viewLifecycleOwner) { res ->
-            if (res.isNotEmpty()) {
-               mediaAdapter.updateCarousalItemList(
-                    updateOnPosition = viewModel.loadMorePosition, newList = res
-                )
-                /*binding.progressBar.show()
-                val viewHolder =
-                    binding.mediaRecyclerView.findViewHolderForAdapterPosition(viewModel.loadMorePosition)
-                viewHolder?.let {
+            if (res.isNotEmpty()) {/*val viewHolder =
+                    binding.mediaRecyclerView.findViewHolderForAdapterPosition(viewModel.loadMorePosition) viewHolder?.let {
                     val innerView: RecyclerView =
                         viewHolder.itemView.findViewById(R.id.carousalView)!!
                     innerView.hide()
@@ -81,6 +71,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
                         innerView.show()
                     }
                 }*/
+
+                mediaAdapter.updateCarousalItemList(
+                    viewModel.loadMorePosition, newList = res
+                )
             }
         }
 
