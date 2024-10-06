@@ -14,7 +14,7 @@ class MediaAdapter(
 ) : RecyclerView.Adapter<MediaAdapter.SearchViewHolder>() {
 
     private val mediaGroups = mutableListOf<Pair<String, MutableList<MediaData>>>()
-    private lateinit var searchViewHolder: SearchViewHolder
+    private var searchViewHolder: SearchViewHolder? = null
 
     @SuppressLint("NotifyDataSetChanged")
     fun submitList(newList: MutableMap<String, MutableList<MediaData>>) {
@@ -28,7 +28,7 @@ class MediaAdapter(
         val binding =
             ItemCarouselBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         searchViewHolder = SearchViewHolder(binding)
-        return searchViewHolder
+        return searchViewHolder!!
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
@@ -44,7 +44,11 @@ class MediaAdapter(
     ) {
         val oldCount = mediaGroups[updateOnPosition].second.size
         mediaGroups[updateOnPosition].second.addAll(newList)
-        searchViewHolder.binding.carousalView.adapter!!.notifyItemChanged(oldCount.minus(1))
+        searchViewHolder?.let {
+            it.binding.carousalView.adapter!!.notifyItemChanged(
+                oldCount.minus(1)
+            )
+        }
     }
 
     class SearchViewHolder(
