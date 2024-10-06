@@ -6,12 +6,15 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.starzplay.entertainment.R
 import com.starzplay.entertainment.databinding.FragmentSearchBinding
 import com.starzplay.entertainment.models.DetailInfo
 import com.starzplay.entertainment.models.UIState
 import com.starzplay.entertainment.ui.base.BaseFragment
-import com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData
+import com.starzplay.starzlibrary.data.remote.ResponseModel.MediaData
 import com.starzplay.starzlibrary.helper.gone
+import com.starzplay.starzlibrary.helper.hide
 import com.starzplay.starzlibrary.helper.show
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -23,7 +26,6 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var mediaAdapter: MediaAdapter
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
@@ -31,12 +33,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     }
 
     private fun setupViews() = with(binding) {
-        mediaAdapter =
-            MediaAdapter(listener = { movieData -> navigateToDetail(movieData) }, loadMore = {
-                val query = searchView.query?.takeIf { it.isNotEmpty() } ?: "All"
-                val currentPage = viewModel.movies.value?.page ?: 1
-
-                viewModel.getMovies(query = query.toString(), page = currentPage.plus(1))
+        mediaAdapter = MediaAdapter(listener = { movieData -> navigateToDetail(movieData) },
+            loadMore = { mediaData, position ->
+                loadMore(mediaData, position)
             })
         searchView.apply {
             isIconified = false
@@ -53,20 +52,35 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             })
 
         }
-        carouselRecyclerView.apply {
+        mediaRecyclerView.apply {
             adapter = mediaAdapter
         }
     }
 
     private fun setupObserverListener() = with(viewModel) {
 
-        movies.observe(viewLifecycleOwner) { respons ->
-            if (mediaAdapter.itemCount == 0) mediaAdapter.submitList(respons.results.groupBy { it.mediaType }
-                .toSortedMap()) else {
-                lifecycleScope.launch {
-                    delay(100)
-                    mediaAdapter.submitList(respons.results.groupBy { it.mediaType })
-                }
+        multiSearch.observe(viewLifecycleOwner) { response ->
+            mediaAdapter.submitList(response)
+        }
+        mediaTypeData.observe(viewLifecycleOwner) { res ->
+            if (res.isNotEmpty()) {
+               mediaAdapter.updateCarousalItemList(
+                    updateOnPosition = viewModel.loadMorePosition, newList = res
+                )
+                /*binding.progressBar.show()
+                val viewHolder =
+                    binding.mediaRecyclerView.findViewHolderForAdapterPosition(viewModel.loadMorePosition)
+                viewHolder?.let {
+                    val innerView: RecyclerView =
+                        viewHolder.itemView.findViewById(R.id.carousalView)!!
+                    innerView.hide()
+                    lifecycleScope.launch {
+                        binding.progressBar.gone()
+                        innerView.smoothScrollToPosition(scrollToPosition - 1)
+                        delay(800)
+                        innerView.show()
+                    }
+                }*/
             }
         }
 
@@ -74,15 +88,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             uiState.collectLatest { uiState ->
                 when (uiState) {
                     is UIState.LoadingState -> {
-                        showLoading()
+                        binding.progressBar.show()
                     }
 
                     is UIState.ContentState, UIState.InitialState -> {
-                        hideLoading()
+                        binding.progressBar.gone()
                     }
 
                     is UIState.ErrorState -> {
-                        hideLoading()
+                        binding.progressBar.gone()
                         showAlertDialog(messages = uiState.message,
                             onPosClick = { _, _ -> },
                             onNegClick = { _, _ -> })
@@ -95,24 +109,10 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.movies.removeObservers(this)
+        viewModel.multiSearch.removeObservers(this)
     }
 
-    private fun showLoading() {
-        binding.apply {
-            //carouselRecyclerView.gone()
-            progressBar.show()
-        }
-    }
-
-    private fun hideLoading() {
-        binding.apply {
-            progressBar.gone()
-            //carouselRecyclerView.show()
-        }
-    }
-
-    private fun navigateToDetail(movie: MoviesData) {
+    private fun navigateToDetail(movie: MediaData) {
         val detailInfo = DetailInfo().apply {
             mediaType = movie.mediaType
             title = movie.mediaType
@@ -124,7 +124,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
                 "tv", "movie" -> {
                     description = movie.overview ?: ""
-                    imageUrl = movie.posterPath ?: ""
+                    imageUrl = movie.backdropPath ?: movie.posterPath ?: ""
                 }
 
                 else -> {
@@ -134,6 +134,16 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
         }
         findNavController().navigate(
             SearchFragmentDirections.toDetailFragment(detailInfo)
+        )
+    }
+
+    private fun loadMore(mediaData: MediaData, position: Int) {
+        val query = binding.searchView.query?.takeIf { it.isNotEmpty() } ?: "All"
+        viewModel.loadMorePosition = position
+        viewModel.getMediaData(
+            query = query.toString(),
+            page = mediaData.pageNo.plus(1),
+            mediaType = mediaData.mediaType
         )
     }
 

@@ -17,58 +17,70 @@
         android:padding="4dp"
         android:src="@drawable/ic_arrow_back" />
 
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
-        android:ellipsize="end"
-        android:maxLines="3"
-        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-        android:textSize="24sp"
-        tools:text="Title" />
-
-
-    <androidx.cardview.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
-        app:cardBackgroundColor="@color/white">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/detailImage"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds ="true"
-            android:src="@drawable/ic_media_placeholder" />
-
-        <ProgressBar
-            android:id="@+id/imageProgressView"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:indeterminateTint="@color/black" />
-    </androidx.cardview.widget.CardView>
+            android:orientation="vertical">
 
 
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-        android:textSize="16sp"
-        tools:text="description" />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                android:textSize="24sp"
+                tools:text="Title" />
 
-    <Button
-        android:id="@+id/playButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
-        android:text="@string/play" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
+                <ImageView
+                    android:id="@+id/detailImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_media_placeholder" />
+
+                <ProgressBar
+                    android:id="@+id/imageProgressView"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="@color/black" />
+            </androidx.cardview.widget.CardView>
+
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textSize="16sp"
+                tools:text="description" />
+
+            <Button
+                android:id="@+id/playButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
+                android:text="@string/play" />
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

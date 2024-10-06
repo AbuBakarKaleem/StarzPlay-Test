@@ -11,6 +11,7 @@ import com.starzplay.entertainment.extension.toSentenceCase
 import com.starzplay.entertainment.models.DetailInfo
 import com.starzplay.entertainment.ui.base.BaseFragment
 import com.starzplay.starzlibrary.helper.gone
+import com.starzplay.starzlibrary.helper.show
 
 class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
     private val viewModel: DetailViewModel by viewModels()
@@ -39,9 +40,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         title.text = selectedMovie.title.toSentenceCase()
         description.text = selectedMovie.description
         playButton.isVisible = selectedMovie.mediaType != "person"
-
+        imageProgressView.show()
         selectedMovie.imageUrl.takeIf { it.isNotEmpty() }?.let {
-            requireContext().loadImage(it, detailImage)
+            requireContext().loadImage(it, detailImage, imageProgressView)
             binding.imageProgressView.gone()
         } ?: imageProgressView.gone()
     }

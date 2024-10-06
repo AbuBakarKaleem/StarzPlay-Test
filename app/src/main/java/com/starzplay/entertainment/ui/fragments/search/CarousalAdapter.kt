@@ -7,20 +7,22 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.starzplay.entertainment.databinding.ItemMediaBinding
 import com.starzplay.entertainment.extension.loadImage
-import com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData
+import com.starzplay.starzlibrary.data.remote.ResponseModel.MediaData
 import com.starzplay.starzlibrary.helper.gone
 
 class CarousalAdapter(
-    private val listener: (MoviesData) -> Unit
+    private val listener: (MediaData) -> Unit
 ) : RecyclerView.Adapter<CarousalAdapter.CarouselViewHolder>() {
 
-    private var moviesData = listOf<MoviesData>()
+    private var mediaData = listOf<MediaData>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitList(newList: List<MoviesData>) {
-        moviesData = newList
+    fun updateList(newList: List<MediaData>) {
+        mediaData = newList
         notifyDataSetChanged()
     }
+
+    fun getItem(position: Int) = mediaData[position]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselViewHolder {
         // Inflate the layout using View Binding
@@ -29,7 +31,7 @@ class CarousalAdapter(
     }
 
     override fun onBindViewHolder(holder: CarouselViewHolder, position: Int) {
-        val movie = moviesData[position]
+        val movie = mediaData[position]
         holder.bind(movie)
 
         holder.itemView.setOnClickListener {
@@ -37,37 +39,34 @@ class CarousalAdapter(
         }
     }
 
-    override fun getItemCount(): Int = moviesData.size
+    override fun getItemCount(): Int = mediaData.size
 
     class CarouselViewHolder(private val binding: ItemMediaBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(movie: MoviesData) {
+        fun bind(movie: MediaData) {
             val imageUrl = when (movie.mediaType) {
                 "person" -> movie.profilePath
-                "tv", "movie" -> movie.posterPath
+                "tv", "movie" -> movie.posterPath ?: movie.backdropPath ?: ""
                 else -> movie.posterPath
             }
             imageUrl?.let {
-                binding.root.context.loadImage(it, binding.mediaImage)
-                binding.imageProgressView.gone()
+                binding.root.context.loadImage(it, binding.mediaImage, binding.imageProgressView)
             } ?: binding.imageProgressView.gone()
         }
     }
 
-    // Use DiffUtil to update the list efficiently
-    fun updateMovies(newMovies: List<MoviesData>) {
-        val diffCallback = MoviesDiffCallback(moviesData, newMovies)
+    fun updateMedia(newMovies: List<MediaData>) {
+        val diffCallback = MediaDiffCallback(mediaData, newMovies)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 
-        // Update the current list and dispatch updates to the adapter
-        moviesData = newMovies
+        mediaData = newMovies
         diffResult.dispatchUpdatesTo(this)
     }
 }
 
-class MoviesDiffCallback(
-    private val oldList: List<MoviesData>, private val newList: List<MoviesData>
+class MediaDiffCallback(
+    private val oldList: List<MediaData>, private val newList: List<MediaData>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int = oldList.size
@@ -75,12 +74,10 @@ class MoviesDiffCallback(
     override fun getNewListSize(): Int = newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        // Compare unique IDs
         return oldList[oldItemPosition].id == newList[newItemPosition].id
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        // Compare the contents of the items
         return oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

@@ -8,7 +8,28 @@ import kotlinx.coroutines.flow.flow
 class Repository {
     private val service = ApiClient.apiService
     suspend fun getMovies(searchQuery: String, pageNo: Int) = flow {
-        val response = service.getMovies(query = searchQuery, pageNo = pageNo)
+        val response = service.multiSearch(query = searchQuery, pageNo = pageNo)
+        emit(
+            if (response.isSuccessful) {
+                DataState.Success(response.body())
+            } else {
+                val errorBody = response.errorBody()?.string()
+                DataState.Error(DataState.CustomMessages.Unauthorized(errorBody.toString()))
+            }
+        )
+    }.catch {
+        this.emit(
+            DataState.Error(
+                DataState.CustomMessages.SomethingWentWrong(
+                    it.message ?: DataState.CustomMessages.BadRequest.toString()
+                )
+            )
+        )
+    }
+
+    suspend fun getMediaData(searchQuery: String, pageNo: Int, endPoint: String) = flow {
+        val response =
+            service.getMediaData(query = searchQuery, pageNo = pageNo, endPoint = endPoint)
         emit(
             if (response.isSuccessful) {
                 DataState.Success(response.body())
@@ -28,7 +49,7 @@ class Repository {
     }
 
     companion object {
-        val instance: Repository by lazy { Repository() }
+        private var INSTANCE: Repository? = null
+        fun getInstance() = INSTANCE ?: Repository().also { INSTANCE = it }
     }
-
 }

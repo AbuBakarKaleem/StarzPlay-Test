@@ -1,23 +1,21 @@
 package com.starzplay.starzlibrary.data.remote.ResponseModel
 
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 
 
-data class Movies(
-    @SerializedName("page") val page: Int,
+data class MediaSearchResponse(
+    @SerializedName("page") var page: Int,
 
-    @SerializedName("results") var results: List<MoviesData>,
+    @SerializedName("results") var results: List<MediaData>,
 
     @SerializedName("total_pages") val totalPages: Int,
 
     @SerializedName("total_results") val totalResults: Int
 ) : Serializable
 
-@Parcelize
-data class MoviesData(
+
+data class MediaData(
     @SerializedName("backdrop_path") val backdropPath: String?,
 
     @SerializedName("id") val id: Int,
@@ -30,38 +28,21 @@ data class MoviesData(
 
     @SerializedName("poster_path") val posterPath: String?,
 
-    @SerializedName("media_type") val mediaType: String,
+    @SerializedName("media_type") var mediaType: String = "",
 
     @SerializedName("adult") val adult: Boolean,
 
     @SerializedName("original_language") val originalLanguage: String,
 
-    @SerializedName("genre_ids") val genreIds: List<Int>,
-
-    @SerializedName("popularity") val popularity: Double,
-
-    @SerializedName("first_air_date") val firstAirDate: String?,
-
-    @SerializedName("vote_average") val voteAverage: Double,
-
-    @SerializedName("vote_count") val voteCount: Int,
     @SerializedName("profile_path") val profilePath: String?,
-
-    @SerializedName("origin_country") val originCountry: List<String>,
-
-    // For person type (optional fields)
-    @SerializedName("known_for") val knownFor: List<KnownFor>? = null,
 
     @SerializedName("title") val title: String? = null,
 
     @SerializedName("original_title") val originalTitle: String? = null,
 
-    @SerializedName("release_date") val releaseDate: String? = null,
+    var pageNo: Int = 1
+) : Serializable
 
-    @SerializedName("video") val video: Boolean? = null
-) : Parcelable
-
-@Parcelize
 data class KnownFor(
     @SerializedName("backdrop_path") val backdropPath: String?,
 
@@ -98,5 +79,5 @@ data class KnownFor(
     @SerializedName("release_date") val releaseDate: String? = null,
 
     @SerializedName("video") val video: Boolean? = null
-) : Parcelable
+) : Serializable
 

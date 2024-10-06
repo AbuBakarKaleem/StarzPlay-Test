@@ -7,62 +7,87 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.starzplay.entertainment.databinding.ItemCarouselBinding
 import com.starzplay.entertainment.extension.toSentenceCase
-import com.starzplay.starzlibrary.data.remote.ResponseModel.MoviesData
+import com.starzplay.starzlibrary.data.remote.ResponseModel.MediaData
 
 class MediaAdapter(
-    private val listener: (MoviesData) -> Unit, private val loadMore: (Boolean) -> Unit
-) : RecyclerView.Adapter<MediaAdapter.MoviesViewHolder>() {
+    private val listener: (MediaData) -> Unit, private val loadMore: (MediaData, Int) -> Unit
+) : RecyclerView.Adapter<MediaAdapter.SearchViewHolder>() {
 
-    private val moviesGroups = mutableListOf<Pair<String, List<MoviesData>>>()
+    private val mediaGroups = mutableListOf<Pair<String, MutableList<MediaData>>>()
+    private lateinit var searchViewHolder: SearchViewHolder
 
     @SuppressLint("NotifyDataSetChanged")
-    fun submitList(newList: Map<String, List<MoviesData>>) {
-        moviesGroups.clear()
-        moviesGroups.addAll(newList.toList())
+    fun submitList(newList: MutableMap<String, MutableList<MediaData>>) {
+        mediaGroups.clear()
+        mediaGroups.addAll(newList.toList())
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         // Use View Binding to inflate the layout
         val binding =
             ItemCarouselBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MoviesViewHolder(binding, listener)
+        searchViewHolder = SearchViewHolder(binding)
+        return searchViewHolder
     }
 
-    override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
-        val (mediaType, items) = moviesGroups[position]
-        holder.bind(mediaType, items, loadMore)
+    override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
+        val (mediaType, items) = mediaGroups[position]
+        holder.bind(mediaType, items, position, loadMore, listener)
     }
 
-    override fun getItemCount(): Int = moviesGroups.size
+    override fun getItemCount(): Int = mediaGroups.size
 
-    class MoviesViewHolder(
-        private val binding: ItemCarouselBinding, listener: (MoviesData) -> Unit
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateCarousalItemList(updateOnPosition: Int, newList: List<MediaData>) {
+        val oldCount = mediaGroups[updateOnPosition].second.size
+        mediaGroups[updateOnPosition].second.addAll(newList)
+        notifyItemChanged(updateOnPosition)
+    }
+
+    class SearchViewHolder(
+        private val binding: ItemCarouselBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        private val carousalAdapter = CarousalAdapter(listener)
-        fun bind(mediaType: String, items: List<MoviesData>, loadMore: (Boolean) -> Unit) {
-            binding.titleView.text = mediaType.toSentenceCase()
+
+        fun bind(
+            mediaType: String,
+            items: List<MediaData>,
+            itemPosition: Int,
+            loadMore: (MediaData, Int) -> Unit,
+            listener: (MediaData) -> Unit
+        ) {
+            val carousalAdapter = CarousalAdapter(listener)
+            val lastVisibleItemPosition: Int
             binding.apply {
+                titleView.text = mediaType.toSentenceCase()
                 carousalView.apply {
                     adapter = carousalAdapter
                     layoutManager =
                         LinearLayoutManager(itemView.context, LinearLayoutManager.HORIZONTAL, false)
+                    lastVisibleItemPosition =
+                        (layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+
                     addOnScrollListener(object : RecyclerView.OnScrollListener() {
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                             super.onScrolled(recyclerView, dx, dy)
                             val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                             if (layoutManager.findLastCompletelyVisibleItemPosition() == carousalAdapter.itemCount - 1) {
-                                loadMore.invoke(true)
+                                loadMore.invoke(
+                                    carousalAdapter.getItem(carousalAdapter.itemCount - 1),
+                                    itemPosition
+                                )
                             }
                         }
                     })
                 }
 
             }
-            if (carousalAdapter.itemCount == 0) carousalAdapter.submitList(items) else {
-                carousalAdapter.updateMovies(items)
-            }
+            carousalAdapter.updateMedia(items)
+            (binding.carousalView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                lastVisibleItemPosition, 0
+            )
         }
     }
+
 }
 
