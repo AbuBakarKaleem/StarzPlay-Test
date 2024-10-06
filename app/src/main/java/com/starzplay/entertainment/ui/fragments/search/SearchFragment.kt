@@ -59,19 +59,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             mediaAdapter.submitList(response)
         }
         mediaTypeData.observe(viewLifecycleOwner) { res ->
-            if (res.isNotEmpty()) {/*val viewHolder =
-                    binding.mediaRecyclerView.findViewHolderForAdapterPosition(viewModel.loadMorePosition) viewHolder?.let {
-                    val innerView: RecyclerView =
-                        viewHolder.itemView.findViewById(R.id.carousalView)!!
-                    innerView.hide()
-                    lifecycleScope.launch {
-                        binding.progressBar.gone()
-                        innerView.smoothScrollToPosition(scrollToPosition - 1)
-                        delay(800)
-                        innerView.show()
-                    }
-                }*/
-
+            if (res.isNotEmpty()) {
                 mediaAdapter.updateCarousalItemList(
                     viewModel.loadMorePosition, newList = res
                 )

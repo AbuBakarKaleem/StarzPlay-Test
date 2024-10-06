@@ -42,12 +42,13 @@ class MediaAdapter(
     fun updateCarousalItemList(
         updateOnPosition: Int, newList: List<MediaData>
     ) {
+        val oldCount = mediaGroups[updateOnPosition].second.size
         mediaGroups[updateOnPosition].second.addAll(newList)
-        notifyItemChanged(updateOnPosition)
+        searchViewHolder.binding.carousalView.adapter!!.notifyItemChanged(oldCount.minus(1))
     }
 
     class SearchViewHolder(
-        private val binding: ItemCarouselBinding
+        val binding: ItemCarouselBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
