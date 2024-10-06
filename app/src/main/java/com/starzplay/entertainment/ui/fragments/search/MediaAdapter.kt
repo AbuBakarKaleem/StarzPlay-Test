@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.starzplay.entertainment.databinding.ItemCarouselBinding
+import com.starzplay.entertainment.databinding.ItemMediaBinding
 import com.starzplay.entertainment.extension.toSentenceCase
 import com.starzplay.starzlibrary.data.remote.ResponseModel.MediaData
 
@@ -26,7 +26,7 @@ class MediaAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         // Use View Binding to inflate the layout
         val binding =
-            ItemCarouselBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemMediaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         searchViewHolder = SearchViewHolder(binding)
         return searchViewHolder!!
     }
@@ -52,7 +52,7 @@ class MediaAdapter(
     }
 
     class SearchViewHolder(
-        val binding: ItemCarouselBinding
+        val binding: ItemMediaBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(

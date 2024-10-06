@@ -3,7 +3,6 @@ package com.starzplay.entertainment.ui.fragments.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import com.starzplay.entertainment.models.UIState
 import com.starzplay.starzlibrary.data.remote.DataState
@@ -22,8 +21,7 @@ class SearchViewModel : ViewModel() {
     private val mediaDataUseCase = FetchMediaDataUseCase()
 
     private val _multiSearch = MutableLiveData<MutableMap<String, MutableList<MediaData>>>()
-    val multiSearch: LiveData<MutableMap<String, MutableList<MediaData>>> =
-        _multiSearch.distinctUntilChanged()
+    val multiSearch: LiveData<MutableMap<String, MutableList<MediaData>>> = _multiSearch
 
     private val _mediaTypeData = MutableLiveData<List<MediaData>>()
     val mediaTypeData: LiveData<List<MediaData>> = _mediaTypeData

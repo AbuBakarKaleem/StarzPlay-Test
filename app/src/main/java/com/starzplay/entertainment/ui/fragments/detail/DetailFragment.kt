@@ -14,7 +14,6 @@ import com.starzplay.starzlibrary.helper.gone
 import com.starzplay.starzlibrary.helper.show
 
 class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
-    private val viewModel: DetailViewModel by viewModels()
     private lateinit var selectedMovie: DetailInfo
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

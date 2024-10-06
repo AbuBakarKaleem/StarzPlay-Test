@@ -1,11 +1,10 @@
 package com.starzplay.entertainment.ui.fragments.search
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.starzplay.entertainment.databinding.ItemMediaBinding
+import com.starzplay.entertainment.databinding.ItemCarouselBinding
 import com.starzplay.entertainment.extension.loadImage
 import com.starzplay.starzlibrary.data.remote.ResponseModel.MediaData
 import com.starzplay.starzlibrary.helper.gone
@@ -16,17 +15,12 @@ class CarousalAdapter(
 
     private var mediaData = listOf<MediaData>()
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun updateList(newList: List<MediaData>) {
-        mediaData = newList
-        notifyDataSetChanged()
-    }
-
     fun getItem(position: Int) = mediaData[position]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarouselViewHolder {
         // Inflate the layout using View Binding
-        val binding = ItemMediaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemCarouselBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CarouselViewHolder(binding)
     }
 
@@ -41,7 +35,7 @@ class CarousalAdapter(
 
     override fun getItemCount(): Int = mediaData.size
 
-    class CarouselViewHolder(private val binding: ItemMediaBinding) :
+    class CarouselViewHolder(private val binding: ItemCarouselBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movie: MediaData) {
