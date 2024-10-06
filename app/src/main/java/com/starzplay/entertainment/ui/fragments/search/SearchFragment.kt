@@ -22,11 +22,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var mediaAdapter: MediaAdapter
 
-    private var isEventsConsumes = false
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
+    }
+
+    override fun onResume() {
+        super.onResume()
         setupObserverListener()
     }
 
@@ -94,6 +96,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.multiSearch.removeObservers(this)
+        viewModel.mediaTypeData.removeObservers(this)
     }
 
     private fun navigateToDetail(movie: MediaData) {
@@ -123,19 +126,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
 
     private fun loadMore(mediaData: MediaData, position: Int) {
         val query = binding.searchView.query?.takeIf { it.isNotEmpty() } ?: "All"
-        viewModel.loadMorePosition = position
-        viewModel.getMediaData(
-            query = query.toString(),
-            page = mediaData.pageNo.plus(1),
-            mediaType = mediaData.mediaType
-        )
-    }
-
-    override fun onStop() {
-        super.onStop()
-        viewModel.apply {
-            multiSearch.removeObservers(viewLifecycleOwner)
-            mediaTypeData.removeObservers(viewLifecycleOwner)
+        with(viewModel) {
+            loadMorePosition = position
+            getMediaData(
+                query = query.toString(),
+                page = mediaData.pageNo.plus(1),
+                mediaType = mediaData.mediaType
+            )
         }
     }
 
