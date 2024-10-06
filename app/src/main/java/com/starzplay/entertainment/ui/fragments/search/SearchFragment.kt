@@ -22,6 +22,8 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var mediaAdapter: MediaAdapter
 
+    private var isEventsConsumes = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
@@ -127,6 +129,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding
             page = mediaData.pageNo.plus(1),
             mediaType = mediaData.mediaType
         )
+    }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.apply {
+            multiSearch.removeObservers(viewLifecycleOwner)
+            mediaTypeData.removeObservers(viewLifecycleOwner)
+        }
     }
 
 }
